@@ -2,6 +2,13 @@ import requests
 
 sleeper_api = 'https://api.sleeper.app/v1/league/'
 
+def ordinal(n: int):
+    if 11 <= (n % 100) <= 13:
+        suffix = 'th'
+    else:
+        suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
+    return str(n) + suffix
+
 def get_all_trades(current_league_id):
     trade_totals = {}
     while(current_league_id is not None):
@@ -45,14 +52,20 @@ def get_all_trades(current_league_id):
                 trades_per_year[id] = trades_per_year[id] + 1
                 trade_totals[id] = trade_totals[id] + 1
 
-        for roster_id in current_users:
-            print(f"\t{current_users[roster_id]}: {trades_per_year[roster_id]}")
+        sorted_trades_per_year = dict(sorted(trades_per_year.items(), key=lambda x:x[1], reverse=True))
+        count = 1
+        for roster_id in sorted_trades_per_year:
+            print(f"\t{ordinal(count)} )\t{sorted_trades_per_year[roster_id]}\t{current_users[roster_id]}")
+            count += 1
 
         # iterate to previous season...
         current_league_id = current_league['previous_league_id']
     print(f"{current_league['name']} All-Time Trade Totals:")
-    for roster_id in current_users:
-            print(f"\t{current_users[roster_id]}: {trade_totals[roster_id]}")
+    sorted_trade_totals = dict(sorted(trade_totals.items(), key=lambda x:x[1], reverse=True))
+    count = 1
+    for roster_id in sorted_trade_totals:
+        print(f"\t{ordinal(count)} )\t{sorted_trade_totals[roster_id]}\t{current_users[roster_id]}")
+        count += 1
 
 
 league_id = "919651662468300800" # Originally From Ohio Dynasty League
