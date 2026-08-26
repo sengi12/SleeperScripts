@@ -1,0 +1,142 @@
+{
+    "2": {
+        "comment": "duplicate matchups from week 8",
+        "matchups": [
+            {
+                "roster_ids": {
+                    "1": "Sengi12",
+                    "2": "scottmontgomery180"
+                }
+            },
+            {
+                "roster_ids": {
+                    "9": "FantasyKing12",
+                    "4": "mundomarine2"
+                }
+            },
+            {
+                "roster_ids": {
+                    "8": "bgerlach",
+                    "6": "THEDrake01"
+                }
+            },
+            {
+                "roster_ids": {
+                    "7": "ssgroveroh",
+                    "3": "mstums1"
+                }
+            },
+            {
+                "roster_ids": {
+                    "10": "JayZee28",
+                    "5": "Cavodanger"
+                }
+            }
+        ]
+    },
+    "3": {
+        "comment": "duplicate matchups from week 9",
+        "matchups": [
+            {
+                "roster_ids": {
+                    "1": "Sengi12",
+                    "7": "ssgroveroh"
+                }
+            },
+            {
+                "roster_ids": {
+                    "2": "scottmontgomery180",
+                    "5": "Cavodanger"
+                }
+            },
+            {
+                "roster_ids": {
+                    "4": "mundomarine2",
+                    "8": "bgerlach"
+                }
+            },
+            {
+                "roster_ids": {
+                    "9": "FantasyKing12",
+                    "3": "mstums1"
+                }
+            },
+            {
+                "roster_ids": {
+                    "10": "JayZee28",
+                    "6": "THEDrake01"
+                }
+            }
+        ]
+    },
+    "13": {
+        "comment": "duplicate matchups from week 6",
+        "matchups": [
+            {
+                "roster_ids": {
+                    "1": "Sengi12",
+                    "9": "FantasyKing12"
+                }
+            },
+            {
+                "roster_ids": {
+                    "2": "scottmontgomery180",
+                    "6": "THEDrake01"
+                }
+            },
+            {
+                "roster_ids": {
+                    "10": "JayZee28",
+                    "8": "bgerlach"
+                }
+            },
+            {
+                "roster_ids": {
+                    "4": "mundomarine2",
+                    "3": "mstums1"
+                }
+            },
+            {
+                "roster_ids": {
+                    "7": "ssgroveroh",
+                    "5": "Cavodanger"
+                }
+            }
+        ]
+    },
+    "14": {
+        "comment": "duplicate matchups from week 7",
+        "matchups": [
+            {
+                "roster_ids": {
+                    "1": "Sengi12",
+                    "4": "mundomarine2"
+                }
+            },
+            {
+                "roster_ids": {
+                    "10": "JayZee28",
+                    "9": "FantasyKing12"
+                }
+            },
+            {
+                "roster_ids": {
+                    "2": "scottmontgomery180",
+                    "3": "mstums1"
+                }
+            },
+            {
+                "roster_ids": {
+                    "8": "bgerlach",
+                    "5": "Cavodanger"
+                }
+            },
+            {
+                "roster_ids": {
+                    "7": "ssgroveroh",
+                    "6": "THEDrake01"
+                }
+            }
+        ]
+    }
+}

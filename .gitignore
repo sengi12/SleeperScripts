@@ -1,0 +1,24 @@
+# Credentials — never commit
+credentials.json
+token.json
+authorized_user.json
+Cookies
+
+# Generated data / caches
+players.json
+league.json
+weekly_projections.json
+fantasypros_projections.json
+dry_run_payload.json
+results.csv
+.sleeper_cache/
+*.html
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editor / OS
+.vscode/
+.DS_Store

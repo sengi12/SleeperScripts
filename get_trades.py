@@ -9,8 +9,9 @@ def ordinal(n: int):
         suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
     return str(n) + suffix
 
-def get_all_trades(current_league_id):
+def get_all_trades(league_id):
     trade_totals = {}
+    current_league_id = league_id
     while(current_league_id is not None):
         if (int(current_league_id) == 0):
             break
@@ -68,7 +69,7 @@ def get_all_trades(current_league_id):
         count += 1
 
 
-league_id = "919651662468300800" # Originally From Ohio Dynasty League
+league_id = "1180564550988939264" # Originally From Ohio Dynasty League
 # league_id = "992219213164748800" # Queen City Kings
 # league_id = "990675750879559680" # It Can Be Done
 # league_id = "997364941130657792" # Dirty Mikes and the Cincy Boys

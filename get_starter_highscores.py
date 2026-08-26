@@ -1,10 +1,10 @@
 import requests
 
 sleeper_api = 'https://api.sleeper.app/v1/league/'
+all_players = requests.get("https://api.sleeper.app/v1/players/nfl").json()
 
 def get_player(player_id):
-    players = requests.get("https://api.sleeper.app/v1/players/nfl").json()
-    return players[player_id]
+    return all_players[player_id]
 
 def get_starter_highscores(league_id):
     highest_scores = {}
@@ -18,7 +18,8 @@ def get_starter_highscores(league_id):
         current_league = requests.get(f"{sleeper_api}{current_league_id}").json()
 
         # change logic here to get only a specific seasons worth of data
-        if(current_league['season'] != '2023'):
+        if(current_league['season'] in ['2025', '2024', '2023', '2022', '2021', '2020', '2019']):
+        # if True:
 
             print(f"Scraping Stats: {current_league['name']} < {current_league['season']} >...", end="\r")
             
@@ -60,7 +61,7 @@ def get_starter_highscores(league_id):
         print(f"{current_users[roster_id]}: \n\t{highest_score_players[roster_id]}: {highest_scores[roster_id]}\n\tWeek {highest_score_weeks[roster_id]} in {highest_score_years[roster_id]}")
 
 
-league_id = "919651662468300800" # Originally From Ohio Dynasty League
+league_id = "1180564550988939264" # Originally From Ohio Dynasty League
 # league_id = "992219213164748800" # Queen City Kings
 # league_id = "990675750879559680" # It Can Be Done
 # league_id = "997364941130657792" # Dirty Mikes and the Cincy Boys
