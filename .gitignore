@@ -12,7 +12,6 @@ fantasypros_projections.json
 dry_run_payload.json
 results.csv
 .sleeper_cache/
-*.html
 
 # Python
 __pycache__/
