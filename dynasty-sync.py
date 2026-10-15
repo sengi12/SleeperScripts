@@ -528,6 +528,24 @@ def build_regular_season(ws, teams: dict[str, Team], scored: list[Season], years
     return updates
  
  
+def _norm_hdr(s: str) -> str:
+    """Fold nbsp, collapse whitespace, lowercase, and treat '&' and 'and' as the same."""
+    s = str(s).replace("\xa0", " ")
+    s = re.sub(r"\s+", " ", s).strip().lower()
+    return s.replace(" & ", " and ")
+
+
+def hcol(hdr: list, label: str) -> int:
+    """Column index of a header, tolerant of stray/nbsp spaces and & vs and.
+    Raises with the actual header cells so a real rename is obvious."""
+    want = _norm_hdr(label)
+    for i, v in enumerate(hdr):
+        if _norm_hdr(v) == want:
+            return i
+    present = ", ".join(repr(v) for v in hdr if str(v).strip())
+    raise ValueError(f"header {label!r} not found on this row. Headers present: {present}")
+
+
 def is_median_year(scored: list[Season], year: int) -> bool:
     return any(s.year == year and s.median for s in scored)
  
@@ -540,12 +558,14 @@ def build_playoffs(ws, teams: dict[str, Team], scored: list[Season], years: list
     first_row = hdr_r + 1
     c_rank = hdr.index("Overall Ranking"); c_champ = hdr.index("Championships"); c_team = hdr.index("Team")
     c_rec = hdr.index("Playoff Record")
-    c_app0 = hdr.index("Playoff Appearances (1st & 2nd)")
-    bye_start = next(c for c in range(c_app0 + 1, len(hdr)) if re.fullmatch(r"\d\d'", hdr[c].strip()))
-    app_cols = list(range(c_app0, bye_start))
-    bye_cols = lay.year_block(hdr_r, bye_start)
+    # The appearances block is the first run of year columns after Playoff Record. It used to
+    # carry a "Playoff Appearances (1st & 2nd)" label cell, but that header was replaced with
+    # year labels on the sheet, so anchor on the year run itself.
+    app_start = next(c for c in range(c_rec + 1, len(hdr)) if re.fullmatch(r"\d\d'", hdr[c].strip()))
+    app_cols = lay.year_block(hdr_r, app_start)
+    bye_cols = lay.year_block(hdr_r, app_cols[-1] + 1)
     sl_cols = lay.year_block(hdr_r, bye_cols[-1] + 1)
-    c_toilet = hdr.index("Toilet Bowl Appearances")
+    c_toilet = hcol(hdr, "Toilet Bowl Appearances")
     age_cols = lay.year_block(hdr_r, c_toilet + 1)
     age_years = [int("20" + hdr[c][:2]) for c in age_cols]
     block_years = [int("20" + hdr[c][:2]) for c in bye_cols]
@@ -740,9 +760,23 @@ def build_trades(ws, teams: dict[str, Team], years: list[int]):
 # ----------------------------------------------------------------------------
 def open_spreadsheet():
     import gspread
-    gc = gspread.oauth(credentials_filename=OAUTH_CLIENT_FILE, authorized_user_filename=OAUTH_TOKEN_FILE,
-                       scopes=["https://www.googleapis.com/auth/spreadsheets"])
-    return gc.open_by_key(SPREADSHEET_ID)
+    from google.auth.exceptions import RefreshError
+
+    def _authorize():
+        gc = gspread.oauth(credentials_filename=OAUTH_CLIENT_FILE, authorized_user_filename=OAUTH_TOKEN_FILE,
+                           scopes=["https://www.googleapis.com/auth/spreadsheets"])
+        return gc.open_by_key(SPREADSHEET_ID)      # forces a token refresh, so a stale token fails here
+
+    try:
+        return _authorize()
+    except RefreshError as e:
+        # Stored refresh token was revoked or expired (common when the OAuth app is still in
+        # "Testing" — Google expires those after 7 days). Drop it and run the browser flow again.
+        if not os.path.exists(OAUTH_TOKEN_FILE):
+            raise
+        print(f"Saved Google token is no longer valid ({e}); re-authorizing in the browser…")
+        os.remove(OAUTH_TOKEN_FILE)
+        return _authorize()
  
  
 def assert_not_protected(title: str):
